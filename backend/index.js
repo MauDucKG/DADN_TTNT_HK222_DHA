@@ -6,6 +6,9 @@ const adminRouter = require("./admin/admin.router");
 const lockRouter = require("./lock/lock.router");
 const allowRouter = require("./allow/allow.router");
 const historyRouter = require("./history/history.router");
+const historyModel = require("./history/history.model");
+const userModel = require("./user/user.model");
+const adminModel = require("./admin/admin.model");
 const http = require("http").createServer(app);
 const cors = require("cors");
 const request = require("request");
@@ -28,37 +31,14 @@ http.listen(4000, function () {
 });
 
 const feedUrl =
-  "https://io.adafruit.com/api/v2/mauduckg/feeds/welcome-feed/data/last";
+  "https://io.adafruit.com/api/v2/minhduco19/feeds/detect-raw/data";
 const options = {
   headers: {
     "X-AIO-Key": "aio_LBxX23hKr9V1PhAYI9qz8PKmFsh6",
   },
 };
 
-request.get(feedUrl, options, async (error, response, body) => {
-  if (error) {
-    console.log("Error:", error);
-    response.status(500).send(error);
-  } else {
-    // const newhistory = JSON.parse(body);
-    // const newHistory = new historyModel({
-    //   name: newhistory.name,
-    //   description: newhistory.description,
-    //   key: newhistory.key,
-    //   created_at: newhistory.created_at,
-    //   updated_at: newhistory.updated_at,
-    // });
-    // try {
-    //   await newHistory.save();
-    //   console.log("Feed saved:", newHistory);
-    // } catch (error) {
-    //   console.log("Error saving feed:", error);
-    // }
-  }
-});
-
 const mqtt = require("mqtt");
-
 // Kết nối MQTT với Adafruit IO
 const client = mqtt.connect("mqtt://io.adafruit.com", {
   username: "mauduckg",
@@ -71,7 +51,7 @@ client.on("connect", () => {
 });
 
 // Đăng ký các chủ đề (topics) để nhận dữ liệu mới
-client.subscribe("mauduckg/feeds/welcome-feed");
+client.subscribe("minhduco19/feeds/detect-raw");
 client.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   request.get(feedUrl, options, async (error, response, body) => {
@@ -79,17 +59,36 @@ client.on("message", (topic, message) => {
       console.log("Error:", error);
       response.status(500).send(error);
     } else {
-      const newFeed = JSON.parse(body);
-      console.log(newFeed)
-      const newfeed = new Feed({
-        value: newFeed.value,
-        created_at: newFeed.created_at,
-      });
-      try {
-        await newfeed.save();
-        console.log("Feed saved:", newfeed);
-      } catch (error) {
-        console.log("Error saving feed:", error);
+      history = JSON.parse(body)[JSON.parse(body).length - 1];
+      console.log(body);
+      let parts = history.value.split(";");
+      let name = parts[0];
+      let status = parseInt(parts[1]);
+  
+      status = status === 1 ? true : false;
+      let userinfo = await userModel.findOne({ ten: name });
+      let admininfo = await adminModel.findOne({ userID: userinfo._id });
+      let dub = await historyModel.findOne({time: history.created_at})
+      if (dub) {
+        console.log("Error saving feed")
+        return
+      }
+    
+      if (userinfo._id && admininfo._id) {
+        const newHistory = new historyModel({
+          lockID: "642497aa1723b6f0a529046d",
+          userID: userinfo._id,
+          adminID: admininfo._id,
+          time: history.created_at,
+          open: status,
+          valid: status,
+        });
+        try {
+          newHistory.save();
+          console.log("Feed saved:", newHistory);
+        } catch (error) {
+          console.log("Error saving feed:", error);
+        }
       }
     }
   });
@@ -102,13 +101,12 @@ app.use("/lock", lockRouter);
 app.use("/allow", allowRouter);
 app.use("/history", historyRouter);
 
-const Schema = mongoose.Schema;
-
-const feedSchema = new Schema({
-  value: { type: String, required: true },
-  created_at: { type: Date, required: true, unique: true },
-});
-
-const Feed = mongoose.model("Feed", feedSchema);
-
-module.exports = Feed;
+app.get('/events', function(req, res) {
+  res.setHeader('Content-Type', 'text/event-stream')
+  res.setHeader('Cache-Control', 'no-cache')
+  
+  setInterval(function() {
+    res.write('event: message\n')
+    res.write('data: Hello, world!\n\n')
+  }, 1000)
+})

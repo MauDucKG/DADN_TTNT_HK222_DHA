@@ -21,6 +21,7 @@ const historySchema = new Schema(
     time: {
       type: Date,
       default: Date.now,
+      unique: true,
     },
     open: {
       type: Boolean,
