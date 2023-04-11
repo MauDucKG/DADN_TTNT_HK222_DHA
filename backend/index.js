@@ -13,6 +13,27 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 const request = require("request");
 
+const socketIO = require("socket.io");
+
+const io = socketIO(http);
+
+// khi có kết nối mới
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  // khi nhận được sự kiện "update" từ client
+  socket.on("update", (data) => {
+    // xử lý việc cập nhật dữ liệu trong database
+    // sau đó gửi thông tin mới nhất đến tất cả các client đang kết nối
+    io.emit("dataUpdated", newData);
+  });
+
+  // khi client ngắt kết nối
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require("dotenv").config();
@@ -86,6 +107,7 @@ client.on("message", (topic, message) => {
         try {
           newHistory.save();
           console.log("Feed saved:", newHistory);
+          io.emit("dataUpdated", newHistory);
         } catch (error) {
           console.log("Error saving feed:", error);
         }

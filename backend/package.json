@@ -17,6 +17,7 @@
     "mqtt": "^4.3.7",
     "nodemon": "^2.0.22",
     "request": "^2.88.2",
+    "socket.io-client": "^4.6.1",
     "socketio": "^1.0.0"
   }
 }
