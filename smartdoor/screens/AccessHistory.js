@@ -2,6 +2,9 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
+import socketIOClient from "socket.io-client";
+
+const ENDPOINT = "http://localhost:4000";
 
 async function getuser(id) {
   try {
@@ -109,6 +112,7 @@ async function getAllHistory() {
 }
 const AccessHistory = ({ navigation }) => {
   const [history, setHistory] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -117,6 +121,25 @@ const AccessHistory = ({ navigation }) => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // kết nối đến server thông qua socket.io-client
+    const socket = socketIOClient(ENDPOINT);
+
+    // khi nhận được sự kiện "dataUpdated" từ server
+    socket.on("dataUpdated", (newData) => {
+      setData(newData);
+    });
+
+    // lấy dữ liệu ban đầu từ server
+    axios.get(`${ENDPOINT}/data`).then((response) => {
+      setData(response.data);
+    });
+
+    // khi component unmount
+    return () => socket.disconnect();
+  }, []);
+
   return (
     <View style={styles.accessHistory}>
       <ScrollView style={styles.body}>
