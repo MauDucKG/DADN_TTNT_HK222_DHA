@@ -112,7 +112,31 @@ async function getAllHistory() {
 }
 const AccessHistory = ({ navigation }) => {
   const [history, setHistory] = useState([]);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // kết nối đến server thông qua socket.io-client
+    const socket = socketIOClient(ENDPOINT);
+  
+    // khi nhận được sự kiện "dataUpdated" từ server
+    socket.on("dataUpdated", (newData) => {
+      setData(newData);
+    });
+  
+    // lấy dữ liệu ban đầu từ server
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${ENDPOINT}/data`);
+        setData(response.data);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  
+    // khi component unmount
+    return () => socket.disconnect();
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -122,25 +146,8 @@ const AccessHistory = ({ navigation }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    // kết nối đến server thông qua socket.io-client
-    const socket = socketIOClient(ENDPOINT);
-
-    // khi nhận được sự kiện "dataUpdated" từ server
-    socket.on("dataUpdated", (newData) => {
-      setData(newData);
-    });
-
-    // lấy dữ liệu ban đầu từ server
-    axios.get(`${ENDPOINT}/data`).then((response) => {
-      setData(response.data);
-    });
-
-    // khi component unmount
-    return () => socket.disconnect();
-  }, []);
-
   return (
+    
     <View style={styles.accessHistory}>
       <ScrollView style={styles.body}>
         {history.map((historyitem, index) => {
