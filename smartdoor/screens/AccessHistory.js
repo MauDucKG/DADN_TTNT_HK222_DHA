@@ -1,14 +1,22 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = "https://192.168.83.49:4000";
 
 async function getuser(id) {
   try {
-    const response = await axios.get("https://dhabackend.onrender.com/user/" + id);
+    const response = await axios.get(ENDPOINT + "/user/" + id);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -43,7 +51,9 @@ const BlockInValid = ({ navigation, data }) => {
             />
             <View style={[styles.masterList1, styles.ml12]}>
               <Text style={styles.caption1}>There is one invalid visitor.</Text>
-              <Text style={[styles.subcaption1, styles.mt2]}>In {data.time}</Text>
+              <Text style={[styles.subcaption1, styles.mt2]}>
+                In {data.time}
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={styles.listConfirm2} onPress={onPressButton}>
@@ -62,7 +72,7 @@ const BlockValid = ({ navigation, data }) => {
   const valid = true;
   const [user, setUser] = useState({});
   const onPressButton = () => {
-    return navigation.navigate("Details", { valid, user, data});
+    return navigation.navigate("Details", { valid, user, data });
   };
 
   useEffect(() => {
@@ -85,7 +95,9 @@ const BlockValid = ({ navigation, data }) => {
             />
             <View style={[styles.masterList1, styles.ml12]}>
               <Text style={styles.caption1}>{user.ten} is valid visitor.</Text>
-              <Text style={[styles.subcaption1, styles.mt2]}>In {data.time}</Text>
+              <Text style={[styles.subcaption1, styles.mt2]}>
+                In {data.time}
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={styles.listConfirm2} onPress={onPressButton}>
@@ -102,7 +114,7 @@ const BlockValid = ({ navigation, data }) => {
 };
 async function getAllHistory() {
   try {
-    const response = await axios.get("https://dhabackend.onrender.com/history");
+    const response = await axios.get(ENDPOINT + "/history");
     console.log(response.data);
     return response.data.historys;
   } catch (error) {
@@ -112,28 +124,17 @@ async function getAllHistory() {
 }
 const AccessHistory = ({ navigation }) => {
   const [history, setHistory] = useState([]);
-  // const [data, setData] = useState([]);
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
     // kết nối đến server thông qua socket.io-client
     const socket = socketIOClient(ENDPOINT);
-  
+
     // khi nhận được sự kiện "dataUpdated" từ server
     socket.on("dataUpdated", (newData) => {
-      setData(newData);
+      setChange(true);
     });
-  
-    // lấy dữ liệu ban đầu từ server
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${ENDPOINT}/data`);
-        setData(response.data);
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  
+
     // khi component unmount
     return () => socket.disconnect();
   }, []);
@@ -142,12 +143,12 @@ const AccessHistory = ({ navigation }) => {
     async function fetchData() {
       const data = await getAllHistory();
       setHistory(data);
+      setChange(false)
     }
     fetchData();
-  }, []);
+  }, [change]);
 
   return (
-    
     <View style={styles.accessHistory}>
       <ScrollView style={styles.body}>
         {history.map((historyitem, index) => {

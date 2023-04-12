@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
   socket.on("update", (data) => {
     // xử lý việc cập nhật dữ liệu trong database
     // sau đó gửi thông tin mới nhất đến tất cả các client đang kết nối
-    io.emit("dataUpdated", newData);
+    io.emit("dataUpdated", data);
   });
 
   // khi client ngắt kết nối
