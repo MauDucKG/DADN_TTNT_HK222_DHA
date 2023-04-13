@@ -153,8 +153,18 @@ export default function App() {
     <NavigationContainer>
       <HistoryStack.Navigator>
       <HistoryStack.Screen
+<<<<<<< HEAD
         name="Init"
         component={Screen}
+=======
+        name="Main"
+        component={Screen}
+        options={{ headerShown: false }}
+      />
+      <HistoryStack.Screen
+        name="LoginS"
+        component={LoginStackScreen}
+>>>>>>> 7f06c9e8e3730bbdcb41732fb5914cfc22620160
         options={{ headerShown: false }}
       />
     </HistoryStack.Navigator>  
