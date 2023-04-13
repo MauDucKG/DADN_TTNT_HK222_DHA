@@ -21,13 +21,6 @@ const io = socketIO(http);
 io.on("connection", (socket) => {
   console.log("New client connected");
 
-  // khi nhận được sự kiện "update" từ client
-  socket.on("update", (data) => {
-    // xử lý việc cập nhật dữ liệu trong database
-    // sau đó gửi thông tin mới nhất đến tất cả các client đang kết nối
-    io.emit("dataUpdated", data);
-  });
-
   // khi client ngắt kết nối
   socket.on("disconnect", () => {
     console.log("Client disconnected");
@@ -55,15 +48,15 @@ const feedUrl =
   "https://io.adafruit.com/api/v2/minhduco19/feeds/detect-raw/data";
 const options = {
   headers: {
-    "X-AIO-Key": "aio_LBxX23hKr9V1PhAYI9qz8PKmFsh6",
+    "X-AIO-Key": "aio_ZXeO05Y8uFjn3rp9rxXkJKHSnQ4w",
   },
 };
 
 const mqtt = require("mqtt");
 // Kết nối MQTT với Adafruit IO
 const client = mqtt.connect("mqtt://io.adafruit.com", {
-  username: "mauduckg",
-  password: "aio_LBxX23hKr9V1PhAYI9qz8PKmFsh6",
+  username: "minhduco19",
+  password: "aio_jnQg58mXPpvTfxkabPiB81iOhhES",
 });
 
 // Xác nhận kết nối thành công
@@ -85,8 +78,23 @@ client.on("message", (topic, message) => {
       let parts = history.value.split(";");
       let name = parts[0];
       let status = parseInt(parts[1]);
-  
+        
       status = status === 1 ? true : false;
+      if (status == false) {
+        const newHistory = new historyModel({
+          time: history.created_at,
+          open: status,
+          valid: status,
+        });
+        try {
+          newHistory.save();
+          console.log("Feed saved:", newHistory);
+          io.emit("dataUpdated", {data: "new data"});
+        } catch (error) {
+          console.log("Error saving feed:", error);
+        }
+        return
+      }
       let userinfo = await userModel.findOne({ ten: name });
       let admininfo = await adminModel.findOne({ userID: userinfo._id });
       let dub = await historyModel.findOne({time: history.created_at})

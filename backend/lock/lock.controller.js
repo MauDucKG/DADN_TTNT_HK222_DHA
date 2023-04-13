@@ -16,10 +16,11 @@ class  lockController {
   }
 
   newlock = async function(req, res) {
-    const { ten, viTri } = req.body;
+    const { ten, viTri, status } = req.body;
     const lock = new lockModel({
       ten,
-      viTri
+      viTri,
+      status
     });
     try {
       await lock.save();
@@ -37,6 +38,20 @@ class  lockController {
         return res.status(404).json({ message: "Lock not found" }); 
       }
       res.json(lock); 
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" }); 
+    }
+  };
+
+  changeLockStatus = async (req, res) => {
+    const lockId = req.params.id;
+    const newStatus = req.body.status;
+    try {
+      const lock = await lockModel.findByIdAndUpdate(lockId, {status: newStatus}); 
+      if (!lock) {
+        return res.status(404).json({ message: "Lock not found" }); 
+      } else res.json({message: "ok được r á"}); 
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Server error" }); 

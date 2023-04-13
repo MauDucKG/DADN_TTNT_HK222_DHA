@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   Image,
@@ -10,34 +10,24 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "https://192.168.83.49:4000";
+const ENDPOINT = "http://192.168.0.101:4000";
 
 async function getuser(id) {
   try {
     const response = await axios.get(ENDPOINT + "/user/" + id);
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("getuser");
     throw error;
   }
 }
 
 const BlockInValid = ({ navigation, data }) => {
   const valid = false;
-  const [user, setUser] = useState({});
   const onPressButton = () => {
-    return navigation.navigate("Details", { valid, user, data });
+    return navigation.navigate("Details", { valid, data });
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      const data1 = await getuser(data.userID);
-      setUser(data1);
-    }
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -118,35 +108,31 @@ async function getAllHistory() {
     console.log(response.data);
     return response.data.historys;
   } catch (error) {
-    console.error(error);
+    console.error("getAllHistory");
     throw error;
   }
 }
 const AccessHistory = ({ navigation }) => {
   const [history, setHistory] = useState([]);
-  const [change, setChange] = useState(false);
-
-  useEffect(() => {
-    // kết nối đến server thông qua socket.io-client
-    const socket = socketIOClient(ENDPOINT);
-
-    // khi nhận được sự kiện "dataUpdated" từ server
-    socket.on("dataUpdated", (newData) => {
-      setChange(true);
-    });
-
-    // khi component unmount
-    return () => socket.disconnect();
-  }, []);
 
   useEffect(() => {
     async function fetchData() {
       const data = await getAllHistory();
       setHistory(data);
-      setChange(false)
     }
     fetchData();
-  }, [change]);
+  }, []);
+
+  // Realtime update
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const data = await getAllHistory();
+      setHistory(data);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+
 
   return (
     <View style={styles.accessHistory}>
@@ -170,7 +156,7 @@ const AccessHistory = ({ navigation }) => {
             );
         })}
       </ScrollView>
-    </View>
+    </View> 
   );
 };
 

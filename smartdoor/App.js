@@ -154,7 +154,7 @@ export default function App() {
       <HistoryStack.Navigator>
       <HistoryStack.Screen
         name="Init"
-        component={LoginStackScreen}
+        component={Screen}
         options={{ headerShown: false }}
       />
     </HistoryStack.Navigator>  
