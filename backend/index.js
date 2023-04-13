@@ -110,9 +110,17 @@ client.on("message", (topic, message) => {
     }
   });
 });
+const client1 = mqtt.connect("mqtt://io.adafruit.com", {
+  username: "minhduco19",
+  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+});
 
-client.subscribe("minhduco19/feeds/hardware-status.lock-status");
-client.on("message", (topic, message) => {
+// Xác nhận kết nối thành công
+client1.on("connect", () => {
+  console.log("Connected to Adafruit IO MQTT");
+});
+client1.subscribe("minhduco19/feeds/hardware-status.lock-status");
+client1.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   request.get(feedUrl1, options, async (error, response, body) => {
     if (error) {
