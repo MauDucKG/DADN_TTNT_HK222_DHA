@@ -35,18 +35,37 @@ const NewUser = () => {
 
   const [image, setImage] = useState(null);
 
-  const handleAdd = () => {
-    const userData = {
-      ten: name,
-      thongTin: info,
-      anhDaiDien: image,
-      // other user data
-    };    
-    postUser(userData);
-    Alert.alert(
-      "Congratulation !",
-      "Reload App để xem chi tiết !!!",
-    )
+  const handleAdd = async () => {
+    try {
+      let imageData = null;
+  
+      if (image !== null) {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.onload = () => {
+          
+          imageData = reader.result;
+          console.log(imageData)
+        };
+        reader.readAsDataURL(blob);
+      }      
+  
+      const userData = {
+        ten: name,
+        thongTin: info,
+        anhDaiDien: image,
+        // other user data
+      };    
+      await postUser(userData);
+      Alert.alert(
+        "Congratulation !",
+        "Reload App để xem chi tiết !!!",
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   useEffect(() => {
