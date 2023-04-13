@@ -48,7 +48,7 @@ const feedUrl =
   "https://io.adafruit.com/api/v2/minhduco19/feeds/detect-raw/data";
 const options = {
   headers: {
-    "X-AIO-Key": "aio_ZXeO05Y8uFjn3rp9rxXkJKHSnQ4w",
+    "X-AIO-Key": "aio_nKDz67kaFxviFytHqR3heImjVmPF",
   },
 };
 
@@ -56,7 +56,7 @@ const mqtt = require("mqtt");
 // Kết nối MQTT với Adafruit IO
 const client = mqtt.connect("mqtt://io.adafruit.com", {
   username: "minhduco19",
-  password: "aio_jnQg58mXPpvTfxkabPiB81iOhhES",
+  password: "aio_nKDz67kaFxviFytHqR3heImjVmPF",
 });
 
 // Xác nhận kết nối thành công

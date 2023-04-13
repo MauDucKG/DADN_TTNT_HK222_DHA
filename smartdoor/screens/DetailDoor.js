@@ -3,13 +3,38 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
 import { Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
+const ENDPOINT = "http://192.168.0.101:4000";
+import axios from 'axios';
 
 const DetailDoor = ({ navigation, route }) => {
   const { lock } = route.params;
   const handleEditPress = () => {
     return navigation.navigate("Edit", { lock });
   };
+
+  const handOnChangeStatusTOpen = async () => {
+    try {
+      const headers = {
+        'X-AIO-Key': 'aio_nKDz67kaFxviFytHqR3heImjVmPF',
+        'Content-Type': 'application/json'
+      };
+      
+      const data = {
+        value: 1
+      };
+      
+      axios.post('https://io.adafruit.com/api/v2/minhduco19/feeds/hardware-status.lock-status/data', data, { headers })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error("handOnChangeStatusTOpen");
+      throw error;
+    }
+  }
   return (
     <>
       <View style={styles.container}>
@@ -158,7 +183,7 @@ const DetailDoor = ({ navigation, route }) => {
             {/* Button */}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.deleteButton]}>
+            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handOnChangeStatusTOpen}>
               <View>
                 <View
                   style={{

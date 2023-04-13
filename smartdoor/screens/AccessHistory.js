@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "react-native";
 
-const ENDPOINT = "https://192.168.0.105:4000";
+const ENDPOINT = "http://192.168.0.101:4000";
 
 async function getuser(id) {
   try {

@@ -29,7 +29,7 @@ const DoorBlock = ({ navigation, lock }) => {
         </TouchableOpacity>
       </View>
     </View>
-  );
+  ); 
 };
 async function getAlldoor() {
   try {
