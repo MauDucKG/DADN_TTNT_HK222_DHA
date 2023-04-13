@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import socketIOClient from "socket.io-client";
 
-const ENDPOINT = "https://192.168.83.49:4000";
+const ENDPOINT = "https://192.168.0.105:4000";
 
 async function getuser(id) {
   try {
