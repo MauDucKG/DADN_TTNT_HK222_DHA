@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "react-native";
 
-const ENDPOINT = "http://192.168.0.101:4000";
+const ENDPOINT = "https://dhabackend.onrender.com";
 
 async function getuser(id) {
   try {

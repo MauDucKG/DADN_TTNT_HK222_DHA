@@ -21,7 +21,7 @@ const DoorBlock = ({ navigation, lock }) => {
           </View>
         </View>
         <TouchableOpacity style={styles.listConfirm2} onPress={onPressButton}>
-          <Image
+          <Image  
             style={styles.iconL1}
             resizeMode="cover"
             source={require("../assets/group-9.png")}

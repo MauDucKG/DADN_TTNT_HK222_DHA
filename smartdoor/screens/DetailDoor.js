@@ -1,40 +1,94 @@
 import * as React from "react";
 import { useState } from "react";
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-const ENDPOINT = "http://192.168.0.101:4000";
-import axios from 'axios';
+const ENDPOINT = "https://dhabackend.onrender.com";
+import axios from "axios";
 
 const DetailDoor = ({ navigation, route }) => {
-  const { lock } = route.params;
+  const [lock, setLock] = useState(route.params.lock);
   const handleEditPress = () => {
     return navigation.navigate("Edit", { lock });
   };
 
   const handOnChangeStatusTOpen = async () => {
-    try {
-      const headers = {
-        'X-AIO-Key': 'aio_nKDz67kaFxviFytHqR3heImjVmPF',
-        'Content-Type': 'application/json'
-      };
-      
-      const data = {
-        value: 1
-      };
-      
-      axios.post('https://io.adafruit.com/api/v2/minhduco19/feeds/hardware-status.lock-status/data', data, { headers })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.error("handOnChangeStatusTOpen");
-      throw error;
+    if (lock.status == 1) {
+      Alert.alert("Already opened", "You can try closing it")
+    } else {
+      try {
+        const headers = {
+          "X-AIO-Key": "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+          "Content-Type": "application/json",
+        };
+
+        const data = {
+          value: 1,
+        };
+
+        axios
+          .post(
+            "https://io.adafruit.com/api/v2/minhduco19/feeds/hardware-status.lock-status/data",
+            data,
+            { headers }
+          )
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        setLock({ ...lock, status: 1 });
+      } catch (error) {
+        console.error("handOnChangeStatusTOpen");
+        throw error;
+      }
     }
-  }
+  };
+
+  const handOnChangeStatusTClode = async () => {
+    if (lock.status == 0) {
+      Alert.alert("Already closed", "You can try opening it")
+    } else {
+      try {
+        const headers = {
+          "X-AIO-Key": "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+          "Content-Type": "application/json",
+        };
+
+        const data = {
+          value: 0,
+        };
+
+        axios
+          .post(
+            "https://io.adafruit.com/api/v2/minhduco19/feeds/hardware-status.lock-status/data",
+            data,
+            { headers }
+          )
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        setLock({ ...lock, status: 0 });
+      } catch (error) {
+        console.error("handOnChangeStatusTOpen");
+        throw error;
+      }
+    }
+  };
   const handleOpen = () => {
     return navigation.navigate("Edit", { lock });
   };
@@ -173,7 +227,7 @@ const DetailDoor = ({ navigation, route }) => {
                   Status
                 </Text>
               </View>
-              {lock.status ? 
+              {lock.status ? (
                 <View style={styles.box}>
                   <Text
                     style={{
@@ -185,7 +239,7 @@ const DetailDoor = ({ navigation, route }) => {
                     Open
                   </Text>
                 </View>
-              :
+              ) : (
                 <View style={styles.box1}>
                   <Text
                     style={{
@@ -197,13 +251,16 @@ const DetailDoor = ({ navigation, route }) => {
                     Close
                   </Text>
                 </View>
-              }
+              )}
             </View>
 
             {/* Button */}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handOnChangeStatusTOpen}>
+            <TouchableOpacity
+              style={[styles.button, styles.deleteButton]}
+              onPress={handOnChangeStatusTOpen}
+            >
               <View>
                 <View
                   style={{
@@ -217,7 +274,7 @@ const DetailDoor = ({ navigation, route }) => {
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button1, styles.deleteButton]}>
+            <TouchableOpacity style={[styles.button1, styles.deleteButton]} onPress={handOnChangeStatusTClode}>
               <View>
                 <View
                   style={{
@@ -245,7 +302,11 @@ const DetailDoor = ({ navigation, route }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Ionicons name={"pencil-sharp"} size={20} color={"#007AFF"}></Ionicons>
+                  <Ionicons
+                    name={"pencil-sharp"}
+                    size={20}
+                    color={"#007AFF"}
+                  ></Ionicons>
                   <Text style={styles.buttonTextB}> Edit </Text>
                 </View>
               </View>
@@ -279,7 +340,7 @@ const DetailDoor = ({ navigation, route }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Ionicons name={"trash-outline"} size={20} ></Ionicons>
+                  <Ionicons name={"trash-outline"} size={20}></Ionicons>
                   <Text style={styles.buttonText}> Delete </Text>
                 </View>
               </View>
