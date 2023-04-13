@@ -94,7 +94,7 @@ client.on("message", (topic, message) => {
 
       if (userinfo._id && admininfo._id) {
         const newHistory = new historyModel({
-          lockID: "642497aa1723b6f0a529046d",
+          lockID: "64377e558bdf9fac813f7086",
           userID: userinfo._id,
           time: history.created_at,
           open: status,
@@ -139,7 +139,7 @@ client1.on("message", (topic, message) => {
           return;
         }
         const newHistory = new historyModel({
-          lockID: "642497aa1723b6f0a529046d",
+          lockID: "64377e558bdf9fac813f7086",
           adminID: "6434fb7eb392e124fed22d70",
           time: history.created_at,
           open: status,
