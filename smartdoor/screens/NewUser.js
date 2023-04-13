@@ -2,14 +2,24 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Platform, TextInput } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
 
+async function postUser(userData) {
+  try {
+    const response = await axios.post("https://dhabackend.onrender.com/user/", userData);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 const NewUser = () => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
-  const [img, setImg] = useState("");
 
   // const handleAdd = () => {
   //   axios.post("http://localhost:4000/user/login", request).then((respond) => {
@@ -24,6 +34,20 @@ const NewUser = () => {
   // };
 
   const [image, setImage] = useState(null);
+
+  const handleAdd = () => {
+    const userData = {
+      ten: name,
+      thongTin: info,
+      anhDaiDien: image,
+      // other user data
+    };    
+    postUser(userData);
+    Alert.alert(
+      "Congratulation !",
+      "Reload App để xem chi tiết !!!",
+    )
+  };
 
   useEffect(() => {
     (async () => {
@@ -44,8 +68,8 @@ const NewUser = () => {
         quality: 1,
         });
 
-        if (!result.cancelled) {
-        setImage(result.uri);
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
         }
     };
 
@@ -180,7 +204,7 @@ const NewUser = () => {
               </View>
                 
               <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.editButton]}>
+                <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleAdd}>
                 <View>
                   <View style={{
                       flexDirection: "row",

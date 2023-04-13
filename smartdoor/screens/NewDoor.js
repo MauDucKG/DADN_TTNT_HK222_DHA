@@ -3,18 +3,47 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import { Alert } from "react-native";
 
+
+async function postDoor(doorData) {
+  try {
+    const response = await axios.post("https://dhabackend.onrender.com/lock/", doorData);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 const NewDoor = () => {
-    const [status, setStatus] = useState("Close");
-    const [backgroundColor, setBackgroundColor] = useState("#8a2be2");
-    const [color, setColor] = useState("#FFF");
+  const [name, setName] = useState("");
+  const [viTri, setviTri] = useState("");
+  const [status, setStatus] = useState("Close");
+  const [backgroundColor, setBackgroundColor] = useState("#8a2be2");
+  const [color, setColor] = useState("#FFF");
 
-    const handleStatusChange = () => {
-        setStatus(status === "Open" ? "Close" : "Open");
-        setBackgroundColor(status === "Open" ? "#8a2be2" : "green");
-        setColor(status === "Open" ? "#FFF" : "black");
-    };
+  const handleStatusChange = () => {
+      setStatus(status === "Open" ? "Close" : "Open");
+      setBackgroundColor(status === "Open" ? "#8a2be2" : "green");
+      setColor(status === "Open" ? "#FFF" : "black");
+  };
+
+  const handleAdd = () => {
+    const doorData = {
+      ten: name,
+      viTri: viTri,
+      status: status == "Open" ? true : false
+      // other user data
+    };    
+    postDoor(doorData);
+    Alert.alert(
+      "Congratulation !",
+      "Reload App để xem chi tiết !!!",
+    )
+  };
+
   return (
     <>
         <View style={styles.container}>
@@ -51,6 +80,7 @@ const NewDoor = () => {
                   <TextInput style={{ color: "gray", paddingHorizontal: 10, textAlign: "right"  }}
                     placeholder="..............................."
                     placeholderTextColor="gray"
+                    onChangeText={(text) => setName(text)}
                     >
                   </TextInput>
                 </View>
@@ -86,6 +116,7 @@ const NewDoor = () => {
                   <TextInput style={{ color: "gray", paddingHorizontal: 10, textAlign: "right" }}
                     placeholder="..............................."
                     placeholderTextColor="gray"
+                    onChangeText={(text) => setviTri(text)}
                     >
                   </TextInput>
                 </View>
@@ -164,7 +195,7 @@ const NewDoor = () => {
               {/* Button */}
               </View>
                 <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.editButton]}>
+                <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleAdd}>
                 <View>
                   <View style={{
                       flexDirection: "row",

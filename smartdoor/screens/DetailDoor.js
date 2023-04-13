@@ -10,6 +10,12 @@ const DetailDoor = ({ navigation, route }) => {
   const handleEditPress = () => {
     return navigation.navigate("Edit", { lock });
   };
+  const handleOpen = () => {
+    return navigation.navigate("Edit", { lock });
+  };
+  const handleClose = () => {
+    return navigation.navigate("Edit", { lock });
+  };
   return (
     <>
       <View style={styles.container}>
@@ -142,23 +148,37 @@ const DetailDoor = ({ navigation, route }) => {
                   Status
                 </Text>
               </View>
-              <View style={styles.box}>
-                <Text
-                  style={{
-                    color: "black",
-                    paddingHorizontal: 10,
-                    fontWeight: "bold",
-                  }}
-                >
-                  Open
-                </Text>
-              </View>
+              {lock.status ? 
+                <View style={styles.box}>
+                  <Text
+                    style={{
+                      color: "black",
+                      paddingHorizontal: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Open
+                  </Text>
+                </View>
+              :
+                <View style={styles.box1}>
+                  <Text
+                    style={{
+                      color: "#fff",
+                      paddingHorizontal: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              }
             </View>
 
             {/* Button */}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.deleteButton]}>
+            <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleOpen}>
               <View>
                 <View
                   style={{
@@ -359,6 +379,13 @@ const styles = StyleSheet.create({
   },
   box: {
     backgroundColor: "green",
+    borderColor: "#000",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 32,
+  },
+  box1: {
+    backgroundColor: "#8a2be2",
     borderColor: "#000",
     paddingHorizontal: 15,
     paddingVertical: 8,
