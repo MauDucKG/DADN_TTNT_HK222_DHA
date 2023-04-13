@@ -128,7 +128,7 @@ const AccessHistory = ({ navigation }) => {
     const interval = setInterval(async () => {
       const data = await getAllHistory();
       setHistory(data);
-    }, 500);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
