@@ -61,14 +61,19 @@ const BlockInValid = ({ navigation, data }) => {
 const BlockValid = ({ navigation, data }) => {
   const valid = true;
   const [user, setUser] = useState({});
+  const [admin, setAdmin] = useState(false)
   const onPressButton = () => {
     return navigation.navigate("Details", { valid, user, data });
   };
 
   useEffect(() => {
     async function fetchData() {
-      const data1 = await getuser(data.userID);
-      setUser(data1);
+      if (data.userID) {
+        const data1 = await getuser(data.userID);
+        setUser(data1);
+      } else {
+        setAdmin(true)
+      }
     }
     fetchData();
   }, []);
@@ -84,7 +89,8 @@ const BlockValid = ({ navigation, data }) => {
               source={require("../assets/icon-l.png")}
             />
             <View style={[styles.masterList1, styles.ml12]}>
-              <Text style={styles.caption1}>{user.ten} is valid visitor.</Text>
+              {!admin && <Text style={styles.caption1}>{user.ten} is valid visitor.</Text>}
+              {!admin || <Text style={styles.caption1}>One admin has opened the door</Text>}
               <Text style={[styles.subcaption1, styles.mt2]}>
                 In {data.time}
               </Text>
@@ -132,13 +138,11 @@ const AccessHistory = ({ navigation }) => {
     return () => clearInterval(interval);
   }, []);
 
-
-
   return (
     <View style={styles.accessHistory}>
       <ScrollView style={styles.body}>
         {history.map((historyitem, index) => {
-          if (historyitem.valid)
+          if (historyitem.open)
             return (
               <BlockValid
                 navigation={navigation}
@@ -156,7 +160,7 @@ const AccessHistory = ({ navigation }) => {
             );
         })}
       </ScrollView>
-    </View> 
+    </View>
   );
 };
 

@@ -94,7 +94,7 @@ client.on("message", (topic, message) => {
 
       if (userinfo._id && admininfo._id) {
         const newHistory = new historyModel({
-          lockID: "64377e558bdf9fac813f7086",
+          lockID: "642497aa1723b6f0a529046d",
           userID: userinfo._id,
           time: history.created_at,
           open: status,
@@ -127,9 +127,9 @@ client1.on("message", (topic, message) => {
       console.log("Error:", error);
       response.status(500).send(error);
     } else {
-      history = JSON.parse(body)[JSON.parse(body).length - 1];
-      console.log(body);
-      let status = history.value;
+      history = JSON.parse(body)[0];
+      console.log(history);
+      let status = parseInt(history.value);
 
       status = status === 1 ? true : false;
       if (status) {
