@@ -162,3 +162,24 @@ app.use("/admin", adminRouter);
 app.use("/lock", lockRouter);
 app.use("/allow", allowRouter);
 app.use("/history", historyRouter);
+
+const client2 = mqtt.connect("mqtt://io.adafruit.com", {
+  username: "minhduco19",
+  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+});
+
+// Xác nhận kết nối thành công
+client2.on("connect", () => {
+  console.log("Connected to Adafruit IO MQTT");
+});
+client2.subscribe("minhduco19/feeds/hardware-status.light-intensity");
+var light_value = 0
+client2.on("message", (topic, message) => {
+  console.log("Received new data:", message.toString());
+  light_value = parseInt(message.toString())
+});
+function handleRequest(req, res) {
+  res.send({ light_value: light_value });
+}
+
+app.get("/lightvalue", handleRequest);

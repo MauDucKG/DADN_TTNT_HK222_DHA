@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -14,15 +14,33 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const ENDPOINT = "https://dhabackend.onrender.com";
 import axios from "axios";
 
+async function getNewLightStatus() {
+  try {
+    const response = await axios.get(ENDPOINT + "/lightvalue");
+    console.log(response.data);
+    return response.data.light_value;
+  } catch (error) {
+    console.error("getNewLightStatus");
+    throw error;
+  }
+}
 const DetailDoor = ({ navigation, route }) => {
   const [lock, setLock] = useState(route.params.lock);
+  const [light, setLight] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const data = await getNewLightStatus();
+      setLight(data);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   const handleEditPress = () => {
     return navigation.navigate("Edit", { lock });
   };
 
   const handOnChangeStatusTOpen = async () => {
     if (lock.status == 1) {
-      Alert.alert("Already opened", "You can try closing it")
+      Alert.alert("Already opened", "You can try closing it");
     } else {
       try {
         const headers = {
@@ -57,7 +75,7 @@ const DetailDoor = ({ navigation, route }) => {
 
   const handOnChangeStatusTClode = async () => {
     if (lock.status == 0) {
-      Alert.alert("Already closed", "You can try opening it")
+      Alert.alert("Already closed", "You can try opening it");
     } else {
       try {
         const headers = {
@@ -193,11 +211,11 @@ const DetailDoor = ({ navigation, route }) => {
                     paddingHorizontal: 10,
                   }}
                 >
-                  Note
+                  Light Intensity
                 </Text>
               </View>
               <View style={{ paddingHorizontal: 10 }}>
-                <Text style={{ color: "gray", paddingHorizontal: 10 }}></Text>
+                <Text style={{ color: "gray", paddingHorizontal: 10 }}>{light}</Text>
               </View>
             </View>
 
@@ -274,7 +292,10 @@ const DetailDoor = ({ navigation, route }) => {
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button1, styles.deleteButton]} onPress={handOnChangeStatusTClode}>
+            <TouchableOpacity
+              style={[styles.button1, styles.deleteButton]}
+              onPress={handOnChangeStatusTClode}
+            >
               <View>
                 <View
                   style={{
