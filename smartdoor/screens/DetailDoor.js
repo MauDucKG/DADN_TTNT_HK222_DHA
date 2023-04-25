@@ -27,9 +27,9 @@ async function getNewLightStatus() {
 
 async function getNewDoorStatus() {
   try {
-    const response = await axios.get(ENDPOINT + "/lightvalue");
+    const response = await axios.get(ENDPOINT + "/lock/64377e558bdf9fac813f7086");
     console.log(response.data);
-    return response.data.doorstatus;
+    return response.data.status;
   } catch (error) {
     console.error("getNewDoorStatus");
     throw error;
@@ -120,12 +120,6 @@ const DetailDoor = ({ navigation, route }) => {
         throw error;
       }
     }
-  };
-  const handleOpen = () => {
-    return navigation.navigate("Edit", { lock });
-  };
-  const handleClose = () => {
-    return navigation.navigate("Edit", { lock });
   };
   return (
     <>

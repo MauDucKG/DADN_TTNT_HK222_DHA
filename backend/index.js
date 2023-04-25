@@ -134,6 +134,7 @@ client1.on("message", (topic, message) => {
 
       status = status === 1 ? true : false;
       let dub = await lockModel.findOneAndUpdate({_id: "64377e558bdf9fac813f7086"}, {status: status});
+      doorstatus = status
         if (dub) {
           console.log("Error saving feed");
           return;
@@ -181,13 +182,12 @@ client2.on("connect", () => {
 });
 client2.subscribe("minhduco19/feeds/hardware-status.light-intensity");
 var light_value = 0
-var doorstatus = false
 client2.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   light_value = parseInt(message.toString())
 });
 function handleRequest(req, res) {
-  res.send({ light_value: light_value,  doorstatus: doorstatus});
+  res.send({ light_value: light_value});
 }
 
 app.get("/lightvalue", handleRequest);
