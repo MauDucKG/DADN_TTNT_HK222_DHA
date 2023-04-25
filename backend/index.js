@@ -7,6 +7,7 @@ const lockRouter = require("./lock/lock.router");
 const allowRouter = require("./allow/allow.router");
 const historyRouter = require("./history/history.router");
 const historyModel = require("./history/history.model");
+const lockModel = require("./lock/lock.model");
 const userModel = require("./user/user.model");
 const adminModel = require("./admin/admin.model");
 const http = require("http").createServer(app);
@@ -132,6 +133,12 @@ client1.on("message", (topic, message) => {
       let status = parseInt(history.value);
 
       status = status === 1 ? true : false;
+      let dub = await lockModel.findOneAndUpdate({_id: "64377e558bdf9fac813f7086"}, {status: status});
+        if (dub) {
+          console.log("Error saving feed");
+          return;
+        }
+      
       if (status) {
         let dub = await historyModel.findOne({ time: history.created_at });
         if (dub) {
@@ -174,12 +181,13 @@ client2.on("connect", () => {
 });
 client2.subscribe("minhduco19/feeds/hardware-status.light-intensity");
 var light_value = 0
+var doorstatus = false
 client2.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   light_value = parseInt(message.toString())
 });
 function handleRequest(req, res) {
-  res.send({ light_value: light_value });
+  res.send({ light_value: light_value,  doorstatus: doorstatus});
 }
 
 app.get("/lightvalue", handleRequest);

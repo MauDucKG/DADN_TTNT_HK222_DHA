@@ -24,13 +24,27 @@ async function getNewLightStatus() {
     throw error;
   }
 }
+
+async function getNewDoorStatus() {
+  try {
+    const response = await axios.get(ENDPOINT + "/lightvalue");
+    console.log(response.data);
+    return response.data.doorstatus;
+  } catch (error) {
+    console.error("getNewDoorStatus");
+    throw error;
+  }
+}
 const DetailDoor = ({ navigation, route }) => {
   const [lock, setLock] = useState(route.params.lock);
   const [light, setLight] = useState(0);
+  const [doorstatus, setDoorstatus] = useState(false);
   useEffect(() => {
     const interval = setInterval(async () => {
-      const data = await getNewLightStatus();
-      setLight(data);
+      const data1 = await getNewLightStatus();
+      const data2 = await getNewDoorStatus();
+      setLight(data1);
+      setDoorstatus(data2);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -245,7 +259,7 @@ const DetailDoor = ({ navigation, route }) => {
                   Status
                 </Text>
               </View>
-              {lock.status ? (
+              {doorstatus ? (
                 <View style={styles.box}>
                   <Text
                     style={{

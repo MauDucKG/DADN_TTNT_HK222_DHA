@@ -111,7 +111,6 @@ const BlockValid = ({ navigation, data }) => {
 async function getAllHistory() {
   try {
     const response = await axios.get(ENDPOINT + "/history");
-    console.log(response.data);
     return response.data.historys;
   } catch (error) {
     console.error("getAllHistory");
