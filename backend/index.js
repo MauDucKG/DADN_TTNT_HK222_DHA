@@ -190,4 +190,43 @@ function handleRequest(req, res) {
   res.send({ light_value: light_value});
 }
 
+handleNewRecognition = async function(req, res) {
+  const { name , status} = req.body;
+  status === 1 ? true : false;
+  if (status == false) {
+    const newHistory = new historyModel({
+      time: Date().now,
+      open: status,
+      valid: status,
+    });
+    try {
+      newHistory.save();
+      console.log("Feed saved:", newHistory);
+      io.emit("dataUpdated", { data: "new data" });
+    } catch (error) {
+      console.log("Error saving feed:", error);
+    }
+    return;
+  }
+  let userinfo = await userModel.findOne({ ten: name });
+  let admininfo = await adminModel.findOne({ userID: userinfo._id });
+
+  if (userinfo._id && admininfo._id) {
+    const newHistory = new historyModel({
+      lockID: "642497aa1723b6f0a529046d",
+      userID: userinfo._id,
+      time: Date().now,
+      open: status,
+      valid: status,
+    });
+    try {
+      newHistory.save();
+      console.log("Feed saved:", newHistory);
+    } catch (error) {
+      console.log("Error saving feed:", error);
+    }
+    res.status(200).send('New history created!');
+  }
+}
 app.get("/lightvalue", handleRequest);
+app.post("/newRecognition", handleNewRecognition);
