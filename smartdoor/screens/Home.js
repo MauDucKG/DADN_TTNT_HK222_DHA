@@ -15,7 +15,7 @@ const Home = ({navigation }) => {
     return navigation.navigate('History')
   };
   const handleLogout = () => {
-    return navigation.navigate('LoginS')
+    return navigation.navigate('Login')
   };
   const onPressChangePW = () => {
     return navigation.navigate('Change')
