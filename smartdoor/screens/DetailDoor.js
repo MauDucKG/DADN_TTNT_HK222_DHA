@@ -1,14 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, } from "react-native";
 import { Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 const ENDPOINT = "https://dhabackend.onrender.com";
@@ -21,6 +13,17 @@ async function getNewLightStatus() {
     return response.data.light_value;
   } catch (error) {
     console.error("getNewLightStatus");
+    throw error;
+  }
+}
+
+async function getNewThreshold() {
+  try {
+    const response = await axios.get(ENDPOINT + "/thresholds");
+    console.log(response.data);
+    return response.data.threshold_value;
+  } catch (error) {
+    console.error("getNewThreshold");
     throw error;
   }
 }
@@ -38,13 +41,16 @@ async function getNewDoorStatus() {
 const DetailDoor = ({ navigation, route }) => {
   const [lock, setLock] = useState(route.params.lock);
   const [light, setLight] = useState(0);
+  const [thresholds, setThresholds] = useState(0);
   const [doorstatus, setDoorstatus] = useState(false);
   useEffect(() => {
     const interval = setInterval(async () => {
       const data1 = await getNewLightStatus();
       const data2 = await getNewDoorStatus();
+      const data3 = await getNewThreshold();
       setLight(data1);
       setDoorstatus(data2);
+      setThresholds(data3);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -224,6 +230,37 @@ const DetailDoor = ({ navigation, route }) => {
               </View>
               <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ color: "gray", paddingHorizontal: 10 }}>{light}</Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingVertical: 5,
+                backgroundColor: "#fff",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  padding: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 20,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  Threshold
+                </Text>
+              </View>
+              <View style={{ paddingHorizontal: 10 }}>
+                <Text style={{ color: "gray", paddingHorizontal: 10 }}>{thresholds}</Text>
               </View>
             </View>
 
