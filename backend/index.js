@@ -192,18 +192,18 @@ function handleRequest(req, res) {
   res.send({ light_value: light_value});
 }
 
-const client3 = mqtt.connect("mqtt://io.adafruit.com", {
-  username: "minhduco19",
-  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
-});
+// const client3 = mqtt.connect("mqtt://io.adafruit.com", {
+//   username: "minhduco19",
+//   password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+// });
 
 // Xác nhận kết nối thành công
-client3.on("connect", () => {
-  console.log("Connected to Adafruit IO MQTT thresholds");
-});
-client3.subscribe("minhduco19/feeds/thresholds");
+// client3.on("connect", () => {
+//   console.log("Connected to Adafruit IO MQTT thresholds");
+// });
+client2.subscribe("minhduco19/feeds/thresholds");
 var threshold_value = 0
-client3.on("message", (topic, message) => {
+client2.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   threshold_value = parseInt(message.toString())
 });
