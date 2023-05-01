@@ -181,13 +181,34 @@ client2.on("connect", () => {
   console.log("Connected to Adafruit IO MQTT");
 });
 client2.subscribe("minhduco19/feeds/hardware-status.light-intensity");
+
 var light_value = 0
+
 client2.on("message", (topic, message) => {
   console.log("Received new data:", message.toString());
   light_value = parseInt(message.toString())
 });
 function handleRequest(req, res) {
   res.send({ light_value: light_value});
+}
+
+const client3 = mqtt.connect("mqtt://io.adafruit.com", {
+  username: "minhduco19",
+  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+});
+
+// Xác nhận kết nối thành công
+client3.on("connect", () => {
+  console.log("Connected to Adafruit IO MQTT thresholds");
+});
+client3.subscribe("minhduco19/feeds/thresholds");
+var threshold_value = 0
+client3.on("message", (topic, message) => {
+  console.log("Received new data:", message.toString());
+  threshold_value = parseInt(message.toString())
+});
+function handleRequestth(req, res) {
+  res.send({ threshold_value: threshold_value});
 }
 
 handleNewRecognition = async function(req, res) {
@@ -228,5 +249,7 @@ handleNewRecognition = async function(req, res) {
     res.status(200).send('New history created!');
   }
 }
+
+app.get("/thresholds", handleRequestth);
 app.get("/lightvalue", handleRequest);
 app.post("/newRecognition", handleNewRecognition);
