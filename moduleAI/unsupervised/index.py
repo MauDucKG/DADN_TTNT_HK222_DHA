@@ -6,7 +6,7 @@ import requests
 import time
 
 # Step 1: Load images for facial recognition from a designated folder
-path = "moduleAI/userData"
+path = os.path.join(os.path.dirname(__file__), 'userData')
 images = [] # Store images
 classNames = [] # Store class names
 myList = os.listdir(path) # Get list of files in the directory
@@ -97,8 +97,8 @@ if res == "Unknown":
     print("Unable to find res within 3 seconds")
 else:
     time.sleep(2)
-    url = "http://localhost:4000/newRecognition"
-    data = {"name": name, "status": 1}
+    url = "https://dhabackend.onrender.com/newRecognition"
+    data = {"name": res, "status": 1}
     requests.post(url, data=data)
 
 cap.release()  
