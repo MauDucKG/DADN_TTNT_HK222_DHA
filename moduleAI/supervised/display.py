@@ -5,6 +5,41 @@ import os
 import requests
 import time
 
+# Connect Adafruit
+import random
+import time
+import sys
+from Adafruit_IO import MQTTClient
+from dotenv import load_dotenv
+
+AIO_FEED_ID = "detect-raw"
+ADAFRUIT_IO_USERNAME = "minhduco19"
+ADAFRUIT_IO_KEY = "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ"
+
+
+def connected(client):
+    print("Ket noi thanh cong ...")
+    # for i in AIO_FEED_ID:
+    client.subscribe(AIO_FEED_ID)
+
+def subscribe(client , userdata , mid , granted_qos):
+    print("Subscribe thanh cong ...")
+
+def disconnected(client):
+    print("Ngat ket noi ...")
+    sys.exit (1)
+
+def message(client , feed_id , payload):
+    print("Nhan du lieu: " + payload)
+
+client = MQTTClient(ADAFRUIT_IO_USERNAME , ADAFRUIT_IO_KEY)
+client.on_connect = connected
+client.on_disconnect = disconnected
+client.on_message = message
+client.on_subscribe = subscribe
+client.connect()
+client.loop_background()
+
 # Initialize camera and face detection classifier
 camera = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades +'haarcascade_frontalface_default.xml')
@@ -70,11 +105,15 @@ while True:
 
 if res == "Unknown":
     print("Unable to find res within 3 seconds")
+    print("Cap nhat")
+    client.publish(AIO_FEED_ID, f'{res};0')
 else:
     time.sleep(2)
     url = "https://dhabackend.onrender.com/newRecognition"
     data = {"name": res, "status": 1}
     requests.post(url, data=data)
+    print("Cap nhat")
+    client.publish(AIO_FEED_ID, f'{res};1')
 
 # Release the camera and close all windows
 camera.release()
