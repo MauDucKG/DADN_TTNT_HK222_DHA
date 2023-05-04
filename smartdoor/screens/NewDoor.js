@@ -40,7 +40,7 @@ const NewDoor = () => {
     postDoor(doorData);
     Alert.alert(
       "Congratulation !",
-      "Reload App để xem chi tiết !!!",
+      "Thêm thành công !!!",
     )
   };
 
