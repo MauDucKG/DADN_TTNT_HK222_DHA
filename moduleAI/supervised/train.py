@@ -54,33 +54,43 @@ lb = LabelBinarizer()
 trainY = lb.fit_transform(label)
 
 # Define model architecture
-Model = Sequential()
-shape = (100, 100, 1)
-Model.add(Conv2D(32, (3, 3), padding="same", input_shape=shape))
-Model.add(Activation("relu"))
-Model.add(Conv2D(32, (3, 3), padding="same"))
-Model.add(Activation("relu"))
-Model.add(MaxPooling2D(pool_size=(2, 2)))
-Model.add(Conv2D(64, (3, 3), padding="same"))
-Model.add(Activation("relu"))
-Model.add(MaxPooling2D(pool_size=(2, 2)))
-Model.add(Flatten())
-Model.add(Dense(512))
-Model.add(Activation("relu"))
-Model.add(Dense(num_subfolders))
-Model.add(Activation("softmax"))
+# Model = Sequential()
+# shape = (100, 100, 1)
+# Model.add(Conv2D(32, (3, 3), padding="same", input_shape=shape))
+# Model.add(Activation("relu"))
+# Model.add(Conv2D(32, (3, 3), padding="same"))
+# Model.add(Activation("relu"))
+# Model.add(MaxPooling2D(pool_size=(2, 2)))
+# Model.add(Conv2D(64, (3, 3), padding="same"))
+# Model.add(Activation("relu"))
+# Model.add(MaxPooling2D(pool_size=(2, 2)))
+# Model.add(Flatten())
+# Model.add(Dense(512))
+# Model.add(Activation("relu"))
+# Model.add(Dense(num_subfolders))
+# Model.add(Activation("softmax"))
+model = Sequential()
+
+model.add(Conv2D(6, kernel_size=(5, 5), activation='relu', input_shape=(100, 100, 1)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(16, kernel_size=(5, 5), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten())
+model.add(Dense(120, activation='relu'))
+model.add(Dense(84, activation='relu'))
+model.add(Dense(num_subfolders, activation='sigmoid'))
 
 # Print model summary
-Model.summary()
+model.summary()
 
 # Compile model with categorical crossentropy loss, adam optimizer, and accuracy metric
-Model.compile(loss='categorical_crossentropy',
+model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
 # Train model on training data
 print("start training")
-Model.fit(X_train, trainY, batch_size=5, epochs=5)
+model.fit(X_train, trainY, batch_size=5, epochs=10)
 
 # Add testing on test set
 # Set path to test dataset folder
@@ -119,10 +129,10 @@ testX = test_data/255
 testY = lb.fit_transform(test_label)
 
 # Evaluate model on test data
-test_loss, test_acc = Model.evaluate(testX, testY)
+test_loss, test_acc = model.evaluate(testX, testY)
 print(f'Test accuracy: {test_acc}')
 
 # Save model
-Model.save(os.path.join(os.path.dirname(__file__), 'model.h5'))
+model.save(os.path.join(os.path.dirname(__file__), 'model.h5'))
 
 

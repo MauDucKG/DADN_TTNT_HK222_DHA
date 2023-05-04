@@ -1,3 +1,4 @@
 /env
 .env
 smartdoor/node_modules
+moduleAI/supervised/model.h5
