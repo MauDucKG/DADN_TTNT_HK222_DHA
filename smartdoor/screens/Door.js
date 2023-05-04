@@ -49,6 +49,14 @@ const Door = ({ navigation }) => {
     }
     fetchData();
   }, []);
+  // Realtime update
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const data = await getAlldoor();
+      setLock(data);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <View>
