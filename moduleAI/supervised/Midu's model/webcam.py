@@ -100,7 +100,7 @@ while(True):
 
         # Display the label
         font = cv2.FONT_HERSHEY_SIMPLEX
-        if predicted_prob[0].max() > 0.8:
+        if predicted_prob[0].max() > 0.9:
             name = labels[predicted_prob[0].argmax()]
             print(name)
             disp = name + f'({predicted_prob[0][predicted_prob[0].argmax()]})'
