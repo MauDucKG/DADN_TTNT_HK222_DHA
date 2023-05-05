@@ -1,4 +1,6 @@
 /env
 .env
 smartdoor/node_modules
+hardware/Model & Labels
+hardware/webcam.py
 moduleAI/supervised/model.h5
