@@ -30,7 +30,7 @@ num_subfolders = len(os.listdir(predata_folder))
 # Loop through each subfolder and each image in each subfolder
 for i in range(1, num_subfolders + 1):
     name = os.listdir(predata_folder)[i-1]
-    for j in range(1, 16):
+    for j in range(1, 17):
         filename = os.path.join(predata_folder, name, f'{j}.jpg')
         Img = cv2.imread(filename)
         Img = cv2.cvtColor(Img, cv2.COLOR_BGR2GRAY)
@@ -106,7 +106,7 @@ test_label = []
 # Loop through each subfolder and each image in each subfolder
 for i in range(1, num_subfolders + 1):
     name = os.listdir(test_folder)[i-1]
-    for j in range(17, 20):
+    for j in range(18, 20):
         filename = os.path.join(test_folder, name, f'{j}.jpg')
         Img = cv2.imread(filename)
         Img = cv2.cvtColor(Img, cv2.COLOR_BGR2GRAY)

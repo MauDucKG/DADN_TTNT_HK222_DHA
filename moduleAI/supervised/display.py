@@ -76,33 +76,18 @@ while True:
         name = os.listdir(predata_folder)[final]
         
         # If the prediction confidence is low, label the person as "Unknown"
-        if result[0][final] < 0.7:
+        if result[0][final] < 0.5:
             name = "Unknown"
 
         if name != "Unknown":
             flat = True
             res = name 
-            break
 
-    # Display the name of the person on the image
-    # if flat:   
-    #     cv2.imshow('Face recognition', image)
-    #     img = np.zeros((200, 500, 3), np.uint8) # Create a black image
-    #     img[:] = (255, 255, 255) # Fill the image with white
-    #     font = cv2.FONT_HERSHEY_SIMPLEX # Set font
-    #     text = res # Set text
-    #     textsize = cv2.getTextSize(text, font, 1, 2)[0] # Get size of text
-    #     textX = int((img.shape[1] - textsize[0]) / 2) # Calculate x-coordinate of text
-    #     textY = int((img.shape[0] + textsize[1]) / 2) # Calculate y-coordinate of text
-    #     cv2.putText(img, text, (textX, textY), font, 1, (255, 0, 0), 2) # Add text to image
-    #     cv2.imshow('Name', img) # Display image
-    # else:
-    #     cv2.imshow('Face recognition', image)
-    cv2.putText(image, res,(x+10,y+h+ 30), fontface, 1, (0,255,0),2)
-    cv2.imshow('Face recognition', image)
+        cv2.putText(image, name,(x+10,y+h+ 30), fontface, 1, (0,255,0),2)
+        cv2.imshow('Face recognition', image)
     
     # Exit the loop if 'q' is pressed
-    if cv2.waitKey(1) == ord("q") or time.time() - start_time > 3:
+    if cv2.waitKey(1) == ord("q"):
         break
 
 if res == "Unknown":
