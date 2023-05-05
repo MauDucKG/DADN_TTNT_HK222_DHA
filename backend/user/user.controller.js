@@ -1,6 +1,7 @@
 const userModel = require("./user.model");
 const allowModel = require("../allow/allow.model");
 const lockModel = require("../lock/lock.model");
+const adminModel = require("../admin/admin.model");
 
 class userController {
   getAllUser(request, respond) {
@@ -65,6 +66,29 @@ class userController {
       res.status(500).json({ message: "Server error" });
     }
   };
+
+  login = async (req, res) => {
+    var taiKhoan = req.body.taiKhoan
+    var matKhau = req.body.matKhau
+    adminModel.findOne({taiKhoan, matKhau})
+    .then(admin => {
+      if (admin) {
+        const _id = admin.userID
+        userModel.findOne(_id).then (user => {
+          res.json({
+            message: "Login successful!",
+            admin: admin,
+            user: user,
+            success: true
+          }) 
+        })    
+      } else {
+        res.json({
+          message: "No user found!"
+        })
+      }
+    })
+  }
 }
 
 module.exports = new userController();
