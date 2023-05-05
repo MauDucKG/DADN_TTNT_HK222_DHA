@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 AIO_FEED_ID = "detect-raw"
 ADAFRUIT_IO_USERNAME = "minhduco19"
-ADAFRUIT_IO_KEY = "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ"
+ADAFRUIT_IO_KEY = "aio_ZSgw77S49MvARxR1AKGdywiukUVq"
 
 
 def connected(client):

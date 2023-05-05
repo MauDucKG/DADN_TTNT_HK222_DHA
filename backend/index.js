@@ -35,7 +35,7 @@ const feedUrl =
   "https://io.adafruit.com/api/v2/minhduco19/feeds/detect-raw/data";
 const options = {
   headers: {
-    "X-AIO-Key": "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+    "X-AIO-Key": "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
   },
 };
 
@@ -46,7 +46,7 @@ const mqtt = require("mqtt");
 // Kết nối MQTT với Adafruit IO
 const client = mqtt.connect("mqtt://io.adafruit.com", {
   username: "minhduco19",
-  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+  password: "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
 });
 
 // Xác nhận kết nối thành công
@@ -113,7 +113,7 @@ client.on("message", (topic, message) => {
 });
 const client1 = mqtt.connect("mqtt://io.adafruit.com", {
   username: "minhduco19",
-  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+  password: "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
 });
 
 // Xác nhận kết nối thành công
@@ -173,7 +173,7 @@ app.use("/history", historyRouter);
 
 const client2 = mqtt.connect("mqtt://io.adafruit.com", {
   username: "minhduco19",
-  password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+  password: "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
 });
 
 // Xác nhận kết nối thành công
@@ -194,7 +194,7 @@ function handleRequest(req, res) {
 
 // const client3 = mqtt.connect("mqtt://io.adafruit.com", {
 //   username: "minhduco19",
-//   password: "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+//   password: "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
 // });
 
 // Xác nhận kết nối thành công

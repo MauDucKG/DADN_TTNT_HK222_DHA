@@ -64,7 +64,7 @@ const DetailDoor = ({ navigation, route }) => {
     } else {
       try {
         const headers = {
-          "X-AIO-Key": "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+          "X-AIO-Key": "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
           "Content-Type": "application/json",
         };
 
@@ -99,7 +99,7 @@ const DetailDoor = ({ navigation, route }) => {
     } else {
       try {
         const headers = {
-          "X-AIO-Key": "aio_fZSE33xOwNlN3MtYt1XWDcrHr6WJ",
+          "X-AIO-Key": "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
           "Content-Type": "application/json",
         };
 
