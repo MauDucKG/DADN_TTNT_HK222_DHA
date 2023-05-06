@@ -3,47 +3,21 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
-async function getlock(id) {
-  try {
-    const response = await axios.get("https://dhabackend.onrender.com/user/" + id + "/lock");
-    console.log(response.data)
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
-const DetailUser = ({ navigation, route }) => {
-  const { user } = route.params;
-  const [lock, setLock] = useState([]);
-
-  const handleEditPress = () => {
-    return navigation.navigate("Edit", {user});
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      const data1 = await getlock(user._id);
-      setLock(data1);
-    }
-    fetchData();
-  }, []);
+const DetailAdmin = ({ navigation }) => {
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={styles.scrollViewContent}>
         <View style={styles.imageview}>
-        <Text style={styles.text}>{user.ten}</Text>
+        <Text style={styles.text}>Nguyen Mau Duc</Text>
           </View>
           
           <View style={styles.imageview}>
             <Image
-              source={{uri: user.anhDaiDien}}
               style={styles.image1}
-              resizeMode="contain"
+              resizeMode="cover"
+              source={require("../assets/Duc.png")}
             />
           </View>
           <View style={styles.detailview}>
@@ -75,12 +49,12 @@ const DetailUser = ({ navigation, route }) => {
               </View>
               <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ color: "gray", paddingHorizontal: 10 }}>
-                  {user.ten}
+                  Nguyen Mau Duc
                 </Text>
               </View>
             </View>
 
-            {/* <View
+            <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -89,7 +63,7 @@ const DetailUser = ({ navigation, route }) => {
                 backgroundColor: "#fff",
               }}
             >
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   padding: 5,
@@ -105,15 +79,15 @@ const DetailUser = ({ navigation, route }) => {
                 >
                   Acess Permissions
                 </Text>
-              </View>
-              <View style={{ paddingHorizontal: 10 }}>
+              </View> */}
+              {/* <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ color: "gray", paddingHorizontal: 10 }}>
                   {lock.map((lockitem) => {
                     return lockitem.ten
                   })}
                 </Text>
-              </View>
-            </View> */}
+              </View> */}
+            </View>
 
             <View
               style={{
@@ -138,12 +112,12 @@ const DetailUser = ({ navigation, route }) => {
                     paddingHorizontal: 10,
                   }}
                 >
-                  Note
+                  Information
                 </Text>
               </View>
               <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ color: "gray", paddingHorizontal: 10 }}>
-                  {user.thongTin}
+                  nguyenmauduc@gmail.com
                 </Text>
               </View>
             </View>
@@ -151,9 +125,8 @@ const DetailUser = ({ navigation, route }) => {
             {/* Button */}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[styles.button, styles.editButton]}
-              onPress={handleEditPress}
             >
               <View>
                 <View
@@ -167,8 +140,8 @@ const DetailUser = ({ navigation, route }) => {
                   <Text style={styles.buttonTextB}> Edit </Text>
                 </View>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button1, styles.deleteButton]}>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity style={[styles.button1, styles.deleteButton]}>
               <View>
                 <View
                   style={{
@@ -181,7 +154,7 @@ const DetailUser = ({ navigation, route }) => {
                   <Text style={styles.buttonText}> Delete </Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </View>
@@ -218,8 +191,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   image1: {
-    width: 170,
-    height: 170,
+    width: 130,
+    height: 200,
     borderRadius: 32,
     alignItems: "center",
   },
@@ -307,6 +280,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+
+  image1: {
+    width: 170,
+    height: 170,
+    borderRadius: 32,
+    alignItems: "center",
+  },
 });
 
-export default DetailUser;
+export default DetailAdmin;

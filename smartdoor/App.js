@@ -16,6 +16,7 @@ import AccessHistory from "./screens/AccessHistory";
 import DetailAccessHistory from "./screens/DetailAccessHistory";
 import User from "./screens/User";
 import DetailUser from "./screens/DetailUser";
+import DetailAdmin from "./screens/DetailAdmin";
 import NewUser from "./screens/NewUser";
 import EditUser from "./screens/EditUser";
 import Door from "./screens/Door";
@@ -41,7 +42,7 @@ function HomeStackScreen() {
   return (
     <HistoryStack.Navigator screenOptions={{ headerShown: false }}>
       <HistoryStack.Screen name="Homes" component={Home} />
-      <HistoryStack.Screen name="Details" component={DetailUser} />
+      <HistoryStack.Screen name="DetailAdmin" component={DetailAdmin} />
       <HistoryStack.Screen name="Change" component={ChangePW} />
     </HistoryStack.Navigator>
   );
@@ -152,16 +153,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <HistoryStack.Navigator>
-      {/* <HistoryStack.Screen
-        name="Main"
-        component={Screen}
-        options={{ headerShown: false }}
-      /> */}
-      <HistoryStack.Screen
+        {/* <HistoryStack.Screen
         name="LoginStack"
         component={LoginStackScreen}
         options={{ headerShown: false }}
+      /> */}
+      <HistoryStack.Screen
+        name="Main"
+        component={Screen}
+        options={{ headerShown: false }}
       />
+      
     </HistoryStack.Navigator>  
   </NavigationContainer>
   )

@@ -15,18 +15,18 @@ const ChangePW = () => {
             <Text style={styles.text}>Change Password</Text>
             <View style={styles.imageview}>
               <Image
-                  source={require("../assets/Avatar.png")}
+                  source={require("../assets/Duc.png")}
                   style={styles.image1}
                   resizeMode="contain"
               />
               <View style = {{flexDirection: "row", padding: 0, alignItems: "center", }}>
                 <Text style={{color: 'black', fontSize: 18, paddingHorizontal: 5, fontWeight: 'bold'}}>
-                    Amanda Doe
+                    Nguyen Mau Duc
                 </Text>
               </View>
               <View style = {{flexDirection: "row", padding: 0, alignItems: "center", }}>
                 <Text style={{opacity: 0.5, fontSize: 14, paddingHorizontal: 0, fontWeight: 'bold'}}>
-                    amanda@gmail.com
+                    nguyenmauduc@gmail.com
                 </Text>
               </View>
             </View>
