@@ -80,7 +80,7 @@ const DetailUser = ({ navigation, route }) => {
               </View>
             </View>
 
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -113,7 +113,7 @@ const DetailUser = ({ navigation, route }) => {
                   })}
                 </Text>
               </View>
-            </View>
+            </View> */}
 
             <View
               style={{

@@ -146,7 +146,7 @@ const NewUser = () => {
                   </TextInput>
                 </View>
               </View>
-              
+{/*               
               <View
                 style={{
                   flexDirection: "row",
@@ -181,7 +181,7 @@ const NewUser = () => {
                     >
                   </TextInput>
                 </View>
-              </View>
+              </View> */}
 
               <View
                 style={{

@@ -103,7 +103,7 @@ const EditUser = ({ route}) => {
                 </View>
               </View>
               
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -136,7 +136,7 @@ const EditUser = ({ route}) => {
                   })}
                 </TextInput>
                 </View>
-              </View>
+              </View> */}
 
               <View
                 style={{

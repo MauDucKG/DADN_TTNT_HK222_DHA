@@ -9,7 +9,7 @@ const Home = ({navigation }) => {
     return navigation.navigate('Info')
   };
   const handleEdit = () => {
-    return navigation.navigate('Details')
+    return navigation.navigate('DetailAdmin')
   };
   const handleNotification = () => {
     return navigation.navigate('History')
@@ -29,11 +29,11 @@ const Home = ({navigation }) => {
             <Image
               style={styles.iconL1}
               resizeMode="cover"
-              source={require("../assets/Avatar.png")}
+              source={require("../assets/Duc.png")}
             />
             <View style={[styles.masterList1, styles.ml12]}>
-              <Text style={[styles.caption1, {fontWeight: 'bold'}]}>IU</Text>
-              <Text style={[styles.subcaption1, styles.mt2]}>Ca sĩ Hàn Quốc</Text>
+              <Text style={[styles.caption1, {fontWeight: 'bold'}]}>Nguyen Mau Duc</Text>
+              <Text style={[styles.subcaption1, styles.mt2]}>nguyenmauduc@gmail.com</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.listConfirm2} onPress={handleEdit}>
@@ -103,7 +103,7 @@ const Home = ({navigation }) => {
         </View>
       </View>
 
-      <View style={styles.groupContainer1}>
+      {/* <View style={styles.groupContainer1}>
         <View style={styles.listConfirmGroup}>
             <TouchableOpacity style={styles.listConfirm1} onPress={handleLogout}>
             <View style={[styles.masterList1, styles.ml12]}>
@@ -113,7 +113,7 @@ const Home = ({navigation }) => {
           </View>
           
           
-      </View>
+      </View> */}
 
       
       

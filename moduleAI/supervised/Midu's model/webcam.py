@@ -65,9 +65,10 @@ stream = cv2.VideoCapture(0)
 
 # Continuously capture frames from camera and detect faces
 flat = False
-res = "Unknown"
+res = "Unknown;0"
 start_time = time.time()
 
+rec_flag = 0
 name = ""
 
 while(True):
@@ -100,7 +101,7 @@ while(True):
 
         # Display the label
         font = cv2.FONT_HERSHEY_SIMPLEX
-        if predicted_prob[0].max() > 0.9:
+        if predicted_prob[0].max() > 0.8:
             name = labels[predicted_prob[0].argmax()]
             print(name)
             disp = name + f'({predicted_prob[0][predicted_prob[0].argmax()]})'
@@ -118,21 +119,40 @@ while(True):
     # Show the frame
     cv2.imshow("Image", frame)
     # Exit the loop if 'q' is pressed
-    if cv2.waitKey(1) == ord("q") or time.time() - start_time > 5:
+    if cv2.waitKey(1) == ord("r"):
+        rec_flag = 1
+        start_time = time.time()
+        # while (time.time() - start_time <= 5):
+        #     pass
+    if rec_flag == 1 and time.time() - start_time > 5:
+        print(name)
+        if name == "Unknown":
+            print("Unable to find res within 5 seconds")
+            print("Cap nhat k oke")
+            client.publish(AIO_FEED_ID, f'{res}')
+        else:
+            time.sleep(2)
+            url = "https://dhabackend.onrender.com/newRecognition"
+            data = {"name": name, "status": 1}
+            # requests.post(url, data=data)
+            print("Cap nhat oke")
+            client.publish(AIO_FEED_ID, f'{res}')
+        rec_flag = 0
+    if cv2.waitKey(1) == ord("q"):
         break
 
-print(name)
-if name == "Unknown":
-    print("Unable to find res within 5 seconds")
-    print("Cap nhat k oke")
-    client.publish(AIO_FEED_ID, f'{res}')
-else:
-    time.sleep(2)
-    url = "https://dhabackend.onrender.com/newRecognition"
-    data = {"name": name, "status": 1}
-    # requests.post(url, data=data)
-    print("Cap nhat oke")
-    client.publish(AIO_FEED_ID, f'{res}')
+# print(name)
+# if name == "Unknown":
+#     print("Unable to find res within 5 seconds")
+#     print("Cap nhat k oke")
+#     client.publish(AIO_FEED_ID, f'{res}')
+# else:
+#     time.sleep(2)
+#     url = "https://dhabackend.onrender.com/newRecognition"
+#     data = {"name": name, "status": 1}
+#     # requests.post(url, data=data)
+#     print("Cap nhat oke")
+#     client.publish(AIO_FEED_ID, f'{res}')
 
 # Cleanup
 stream.release()
