@@ -103,7 +103,7 @@ const EditUser = ({ route}) => {
                 </View>
               </View>
               
-              {/* <View
+              <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -126,17 +126,15 @@ const EditUser = ({ route}) => {
                       paddingHorizontal: 10,
                     }}
                   >
-                    Acess Permissions
+                    Access Permissions
                   </Text>
                 </View>
                 <View style={{ paddingHorizontal: 10 }}>
                 <TextInput style={{ color: "gray", paddingHorizontal: 10, textAlign: "right"  }}>
-                  {door.map((lockitem) => {
-                    return lockitem.ten
-                  })}
+                  Cabinet A
                 </TextInput>
                 </View>
-              </View> */}
+              </View>
 
               <View
                 style={{

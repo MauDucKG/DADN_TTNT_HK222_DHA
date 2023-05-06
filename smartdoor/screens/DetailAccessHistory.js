@@ -49,7 +49,7 @@ const DetailAccessHistory = ({ route }) => {
             </View>
             <View style={styles.imageview}>
               <Image
-                source={require("../assets/logo-placeholder.png")}
+                source={require("../assets/midu.jpg")}
                 style={styles.image1}
                 resizeMode="contain"
               />
@@ -123,7 +123,7 @@ const DetailAccessHistory = ({ route }) => {
                 </View>
                 <View style={{ paddingHorizontal: 10 }}>
                   <Text style={{ color: "gray", paddingHorizontal: 10 }}>
-                    {lock.ten}
+                    Cabinet A
                   </Text>
                 </View>
               </View>
@@ -264,7 +264,7 @@ const DetailAccessHistory = ({ route }) => {
                 </View>
                 <View style={{ paddingHorizontal: 10 }}>
                   <Text style={{ color: "gray", paddingHorizontal: 10 }}>
-                    {lock.ten}
+                    Cabinet A
                   </Text>
                 </View>
               </View>
@@ -323,8 +323,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   image1: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 32,
     alignItems: "center",
   },

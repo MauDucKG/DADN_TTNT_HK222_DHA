@@ -80,7 +80,7 @@ const DetailUser = ({ navigation, route }) => {
               </View>
             </View>
 
-            {/* <View
+            <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -103,17 +103,15 @@ const DetailUser = ({ navigation, route }) => {
                     paddingHorizontal: 10,
                   }}
                 >
-                  Acess Permissions
+                  Access Permissions
                 </Text>
               </View>
               <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ color: "gray", paddingHorizontal: 10 }}>
-                  {lock.map((lockitem) => {
-                    return lockitem.ten
-                  })}
+                  Cabinet A
                 </Text>
               </View>
-            </View> */}
+            </View>
 
             <View
               style={{

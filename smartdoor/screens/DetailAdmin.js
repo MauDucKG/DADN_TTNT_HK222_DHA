@@ -125,7 +125,7 @@ const DetailAdmin = ({ navigation }) => {
             {/* Button */}
           </View>
           <View style={styles.buttonContainer}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={[styles.button, styles.editButton]}
             >
               <View>
@@ -140,7 +140,7 @@ const DetailAdmin = ({ navigation }) => {
                   <Text style={styles.buttonTextB}> Edit </Text>
                 </View>
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             {/* <TouchableOpacity style={[styles.button1, styles.deleteButton]}>
               <View>
                 <View
@@ -243,11 +243,11 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginLeft: 31,
+    marginLeft: 92,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
-    width: "35%",
+    width: "45%",
     borderRadius: 15,
   },
   button1: {

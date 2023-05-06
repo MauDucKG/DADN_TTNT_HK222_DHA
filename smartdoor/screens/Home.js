@@ -103,7 +103,7 @@ const Home = ({navigation }) => {
         </View>
       </View>
 
-      {/* <View style={styles.groupContainer1}>
+      <View style={styles.groupContainer1}>
         <View style={styles.listConfirmGroup}>
             <TouchableOpacity style={styles.listConfirm1} onPress={handleLogout}>
             <View style={[styles.masterList1, styles.ml12]}>
@@ -113,7 +113,7 @@ const Home = ({navigation }) => {
           </View>
           
           
-      </View> */}
+      </View>
 
       
       
