@@ -60,7 +60,7 @@ const NewUser = () => {
       await postUser(userData);
       Alert.alert(
         "Congratulation !",
-        "Reload App để xem chi tiết !!!",
+        "Thêm mới thành công !!!",
       );
     } catch (error) {
       console.error(error);

@@ -366,7 +366,7 @@ const DetailDoor = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
             </View>}
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -403,7 +403,7 @@ const DetailDoor = ({ navigation, route }) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             <View
               style={{
