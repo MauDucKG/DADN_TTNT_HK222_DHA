@@ -1,6 +1,14 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 const ENDPOINT = "https://dhabackend.onrender.com";
@@ -9,7 +17,7 @@ import axios from "axios";
 async function getNewLightStatus() {
   try {
     const response = await axios.get(ENDPOINT + "/lightvalue");
-    console.log(response.data);
+    // console.log(response.data);
     return response.data.light_value;
   } catch (error) {
     console.error("getNewLightStatus");
@@ -20,7 +28,7 @@ async function getNewLightStatus() {
 async function getNewThreshold() {
   try {
     const response = await axios.get(ENDPOINT + "/thresholds");
-    console.log(response.data);
+    // console.log(response.data);
     return response.data.threshold_value;
   } catch (error) {
     console.error("getNewThreshold");
@@ -30,8 +38,10 @@ async function getNewThreshold() {
 
 async function getNewDoorStatus() {
   try {
-    const response = await axios.get(ENDPOINT + "/lock/64377e558bdf9fac813f7086");
-    console.log(response.data);
+    const response = await axios.get(
+      ENDPOINT + "/lock/64377e558bdf9fac813f7086"
+    );
+    // console.log(response.data);
     return response.data.status;
   } catch (error) {
     console.error("getNewDoorStatus");
@@ -43,6 +53,9 @@ const DetailDoor = ({ navigation, route }) => {
   const [light, setLight] = useState(0);
   const [thresholds, setThresholds] = useState(0);
   const [doorstatus, setDoorstatus] = useState(false);
+  const [threshold_edit, setthreshold_edit] = useState(false);
+  const [threshold_edit_n, setthreshold_edit_n] = useState(0);
+  const [mode, setmode] = useState(false);
   useEffect(() => {
     const interval = setInterval(async () => {
       const data1 = await getNewLightStatus();
@@ -56,6 +69,35 @@ const DetailDoor = ({ navigation, route }) => {
   }, []);
   const handleEditPress = () => {
     return navigation.navigate("Edit", { lock });
+  };
+
+  const handleEditThre = async () => {
+    try {
+      const headers = {
+        "X-AIO-Key": "aio_ZSgw77S49MvARxR1AKGdywiukUVq",
+        "Content-Type": "application/json",
+      };
+      const data = {
+        value: threshold_edit_n,
+      };
+
+      axios
+        .post(
+          "https://io.adafruit.com/api/v2/minhduco19/feeds/thresholds/data",
+          data,
+          { headers }
+        )
+        .then((response) => {
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        setthreshold_edit(false)
+    } catch (error) {
+      console.error("handOnChangeStatusTOpen");
+      throw error;
+    }
   };
 
   const handOnChangeStatusTOpen = async () => {
@@ -79,7 +121,7 @@ const DetailDoor = ({ navigation, route }) => {
             { headers }
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -114,7 +156,7 @@ const DetailDoor = ({ navigation, route }) => {
             { headers }
           )
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -229,7 +271,9 @@ const DetailDoor = ({ navigation, route }) => {
                 </Text>
               </View>
               <View style={{ paddingHorizontal: 10 }}>
-                <Text style={{ color: "gray", paddingHorizontal: 10 }}>{light}</Text>
+                <Text style={{ color: "gray", paddingHorizontal: 10 }}>
+                  {light}
+                </Text>
               </View>
             </View>
 
@@ -259,9 +303,106 @@ const DetailDoor = ({ navigation, route }) => {
                   Threshold
                 </Text>
               </View>
-              <View style={{ paddingHorizontal: 10 }}>
-                <Text style={{ color: "gray", paddingHorizontal: 10 }}>{thresholds}</Text>
+              { threshold_edit ||<TouchableOpacity
+                onPress={() => {
+                  setthreshold_edit(true);
+                }}
+              >
+                <View style={{ paddingHorizontal: 10 }}>
+                  <Text style={{ color: "gray", paddingHorizontal: 10 }}>
+                    {thresholds}
+                  </Text>
+                </View>
+              </TouchableOpacity>}
+              {threshold_edit && (
+                <TextInput
+                  style={{ color: "gray", paddingHorizontal: 10 }}
+                  placeholder="New value"
+                  keyboardType="numeric"
+                  placeholderTextColor="gray"
+                  onChangeText={(e) => {
+                    setthreshold_edit_n(e);
+                  }}
+                >
+                  {thresholds}
+                </TextInput>
+              )}
+            </View>
+            { threshold_edit && <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingVertical: 5,
+                backgroundColor: "#fff",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  padding: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 20,
+                    paddingHorizontal: 10,
+                  }}
+                ></Text>
               </View>
+              <TouchableOpacity onPress={handleEditThre}>
+                <View style={styles.box}>
+                  <Text
+                    style={{
+                      color: "white",
+                      paddingHorizontal: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Save
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingVertical: 5,
+                backgroundColor: "#fff",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  padding: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 20,
+                    paddingHorizontal: 10,
+                  }}
+                >Mode</Text>
+              </View>
+              <TouchableOpacity onPress={handleEditThre}>
+                <View style={styles.box}>
+                  <Text
+                    style={{
+                      color: "white",
+                      paddingHorizontal: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {mode}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
 
             <View
